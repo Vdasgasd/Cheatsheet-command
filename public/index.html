@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMD Cheatsheet — sandiaz.my.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8eaf0;
+    --text2: #8b92a8;
+    --text3: #555e75;
+    --accent: #4f8ef7;
+    --accent2: #3a7be0;
+    --accent-bg: rgba(79,142,247,0.1);
+    --accent-border: rgba(79,142,247,0.3);
+    --green: #3dd68c;
+    --green-bg: rgba(61,214,140,0.1);
+    --amber: #f5a623;
+    --amber-bg: rgba(245,166,35,0.1);
+    --pink: #e879a0;
+    --pink-bg: rgba(232,121,160,0.1);
+    --purple: #a78bfa;
+    --purple-bg: rgba(167,139,250,0.1);
+    --teal: #34d1bf;
+    --teal-bg: rgba(52,209,191,0.1);
+    --gray-bg: rgba(139,146,168,0.1);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+    --danger: #f87171;
+    --danger-bg: rgba(248,113,113,0.1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+  /* header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 56px;
+  }
+  .logo {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    letter-spacing: -0.02em;
+  }
+  .logo span { color: var(--text3); }
+
+  /* main */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+  }
+
+  /* search bar */
+  .search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+  input[type="text"], input[type="search"], select, textarea {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    padding: 9px 14px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  input[type="text"]:focus, input[type="search"]:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79,142,247,0.12);
+  }
+  .search-wrap input { padding-left: 38px; }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b92a8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+    cursor: pointer;
+  }
+  select option { background: var(--bg2); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-ghost {
+    background: var(--bg2);
+    color: var(--text2);
+    border: 1px solid var(--border2);
+  }
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
+  .btn-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(248,113,113,0.2);
+  }
+  .btn-danger:hover { background: rgba(248,113,113,0.2); }
+
+  /* filter cats */
+  .cats-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    align-items: center;
+  }
+  .cat-pill {
+    padding: 5px 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font);
+    transition: all .15s;
+  }
+  .cat-pill:hover { border-color: var(--border2); color: var(--text); background: var(--bg2); }
+  .cat-pill.active { background: var(--accent-bg); color: var(--accent); border-color: var(--accent-border); }
+
+  .count-label {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 1rem;
+  }
+
+  /* grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color .15s, transform .1s;
+  }
+  .card:hover { border-color: var(--border2); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .card-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tag-Linux    { background: var(--accent-bg); color: var(--accent); }
+  .tag-Docker   { background: var(--green-bg); color: var(--green); }
+  .tag-Networking { background: var(--purple-bg); color: var(--purple); }
+  .tag-Git      { background: var(--amber-bg); color: var(--amber); }
+  .tag-Systemd  { background: var(--pink-bg); color: var(--pink); }
+  .tag-General  { background: var(--gray-bg); color: var(--text2); }
+
+  .card-cmd {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    word-break: break-all;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    position: relative;
+  }
+  .card-cmd:hover { border-color: var(--accent-border); background: rgba(79,142,247,0.05); }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .copy-feedback {
+    font-size: 11px;
+    color: var(--text3);
+    transition: color .15s;
+    min-height: 16px;
+  }
+  .copy-feedback.ok { color: var(--green); }
+
+  .card-footer {
+    display: flex;
+    gap: 6px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 2px;
+  }
+  .btn-sm {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    transition: all .15s;
+  }
+  .btn-sm:hover { background: var(--bg3); color: var(--text); }
+  .btn-sm.del:hover { color: var(--danger); border-color: rgba(248,113,113,0.3); background: var(--danger-bg); }
+
+  .empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text3);
+  }
+  .empty-icon { font-size: 2rem; margin-bottom: 1rem; opacity: .4; }
+  .empty p { font-size: 14px; }
+
+  /* modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 1rem;
+  }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .modal h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 12px; color: var(--text2); font-weight: 500; }
+  textarea { height: 80px; resize: vertical; font-family: var(--mono); font-size: 13px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* toast */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+    z-index: 999;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all .2s;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .search-row { flex-direction: column; }
+    .header-inner { gap: .5rem; }
+    .logo { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">~/cmd<span>.cheatsheet</span></div>
+    <div style="flex:1"></div>
+    <button class="btn btn-primary" onclick="openAdd()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Tambah
+    </button>
+    <button class="btn btn-ghost" onclick="exportData()">Export</button>
+    <label class="btn btn-ghost" style="cursor:pointer">
+      Import
+      <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+    </label>
+  </div>
+</header>
+
+<main>
+  <div class="search-row">
+    <div class="search-wrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="search" id="search" placeholder="Cari command, nama, atau deskripsi…" autocomplete="off">
+    </div>
+    <select id="cat-select" onchange="setCatFromSelect()">
+      <option value="Semua">Semua kategori</option>
+      <option>Linux</option>
+      <option>Docker</option>
+      <option>Networking</option>
+      <option>Git</option>
+      <option>Systemd</option>
+      <option>General</option>
+    </select>
+  </div>
+
+  <div class="cats-row" id="cats"></div>
+  <div class="count-label" id="count"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- modal -->
+<div class="modal-overlay" id="modal" style="display:none" onclick="onOverlayClick(event)">
+  <div class="modal">
+    <h3 id="modal-title">Tambah command baru</h3>
+    <div class="form-group">
+      <label>Nama / judul</label>
+      <input type="text" id="f-name" placeholder="cth: List semua service yang running">
+    </div>
+    <div class="form-group">
+      <label>Command</label>
+      <textarea id="f-cmd" placeholder="cth: systemctl list-units --type=service --state=running"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Deskripsi</label>
+      <input type="text" id="f-desc" placeholder="cth: Tampilkan semua systemd service yang aktif">
+    </div>
+    <div class="form-group">
+      <label>Kategori</label>
+      <select id="f-cat">
+        <option>Linux</option>
+        <option>Docker</option>
+        <option>Networking</option>
+        <option>Git</option>
+        <option>Systemd</option>
+        <option>General</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Batal</button>
+      <button class="btn btn-primary" onclick="saveCard()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let CATS = ['Semua'];
+let activeCat = 'Semua';
+let editId = null;
+let data = [];
+
+// Fetch data dari Backend API SQLite
+async function loadData() {
+  try {
+    await loadCategories();
+    const res = await fetch('/api/commands');
+    data = await res.json();
+    render();
+  } catch(err) {
+    showToast('Gagal memuat data dari server');
+    console.error(err);
+  }
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function filtered() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  return data.filter(c => {
+    const matchCat = activeCat === 'Semua' || c.cat === activeCat;
+    const matchQ = !q || c.name.toLowerCase().includes(q) || c.cmd.toLowerCase().includes(q) || (c.desc||'').toLowerCase().includes(q) || c.cat.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+}
+
+function renderCats() {
+  const counts = {};
+  CATS.forEach(c => counts[c] = 0);
+  data.forEach(c => { counts[c.cat] = (counts[c.cat]||0) + 1; counts['Semua']++; });
+  document.getElementById('cats').innerHTML = CATS.map(c =>
+    `<button class="cat-pill${c===activeCat?' active':''}" onclick="setCat('${c}')">${c} <span style="opacity:.5;font-weight:400">${counts[c]||0}</span></button>`
+  ).join('');
+}
+
+async function loadCategories() {
+  try {
+    const res = await fetch('/api/categories');
+    const cats = await res.json();
+
+    CATS = ['Semua', ...cats.sort()];
+  } catch (err) {
+    console.error(err);
+    showToast('Gagal memuat kategori');
+  }
+}
+
+function setCat(c) { activeCat = c; document.getElementById('cat-select').value = c; render(); }
+function setCatFromSelect() { activeCat = document.getElementById('cat-select').value; render(); }
+
+function copyCmd(id) {
+  const c = data.find(x => x.id === id);
+  if (!c) return;
+  navigator.clipboard.writeText(c.cmd).then(() => {
+    const el = document.getElementById('fb-' + id);
+    if (el) {
+      el.textContent = '✓ Tersalin ke clipboard'; el.className = 'copy-feedback ok';
+      setTimeout(() => { el.textContent = 'klik untuk copy'; el.className = 'copy-feedback'; }, 1800);
+    }
+  });
+}
+
+function render() {
+  renderCats();
+  renderCategorySelect();
+  const list = filtered();
+  document.getElementById('count').textContent = `${list.length} command`;
+  document.getElementById('grid').innerHTML = list.length === 0
+    ? `<div class="empty"><div class="empty-icon">⌕</div><p>Tidak ada command</p></div>`
+    : list.map(c => `
+<div class="card" id="card-${c.id}">
+  <div class="card-header"><span class="card-name">${esc(c.name)}</span><span class="tag tag-${esc(c.cat)}">${esc(c.cat)}</span></div>
+  <div class="card-cmd" onclick="copyCmd(${c.id})">${esc(c.cmd)}</div>
+  <div class="card-desc">${esc(c.desc)}</div>
+  <div id="fb-${c.id}" class="copy-feedback">klik untuk copy</div>
+  <div class="card-footer">
+    <button class="btn-sm" onclick="openEdit(${c.id})">Edit</button>
+    <button class="btn-sm del" onclick="del(${c.id})">Hapus</button>
+  </div>
+</div>`).join('');
+}
+
+function renderCategorySelect() {
+  const sel = document.getElementById('cat-select');
+
+  sel.innerHTML = CATS.map(c =>
+    `<option value="${c}">${c === 'Semua' ? 'Semua kategori' : c}</option>`
+  ).join('');
+}
+
+function renderFormCategory() {
+  const sel = document.getElementById('f-cat');
+
+  sel.innerHTML = CATS
+    .filter(c => c !== 'Semua')
+    .map(c => `<option value="${c}">${c}</option>`)
+    .join('');
+}
+
+function openAdd() {
+  editId = null;
+  renderFormCategory();
+  document.getElementById('modal-title').textContent = 'Tambah command baru';
+  document.getElementById('f-name').value = ''; document.getElementById('f-cmd').value = '';
+  document.getElementById('f-desc').value = ''; document.getElementById('f-cat').value = 'Linux';
+  document.getElementById('modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('f-name').focus(), 50);
+}
+
+function openEdit(id) {
+  const c = data.find(x => x.id === id);
+  if (!c) return;
+  editId = id;
+  renderFormCategory();
+  document.getElementById('modal-title').textContent = 'Edit command';
+  document.getElementById('f-name').value = c.name; document.getElementById('f-cmd').value = c.cmd;
+  document.getElementById('f-desc').value = c.desc; document.getElementById('f-cat').value = c.cat;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+function onOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+
+// POST / PUT ke API
+async function saveCard() {
+  const payload = {
+    name: document.getElementById('f-name').value.trim(),
+    cmd: document.getElementById('f-cmd').value.trim(),
+    desc: document.getElementById('f-desc').value.trim(),
+    cat: document.getElementById('f-cat').value
+  };
+
+  if (!payload.name || !payload.cmd) return showToast('Nama dan command wajib diisi');
+
+  const url = editId !== null ? `/api/commands/${editId}` : '/api/commands';
+  const method = editId !== null ? 'PUT' : 'POST';
+
+  try {
+    await fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    showToast(editId !== null ? 'Command diperbarui' : 'Command ditambahkan');
+    closeModal();
+    loadData(); // Reload data dari SQLite
+  } catch(err) { showToast('Gagal menyimpan data'); }
+}
+
+// DELETE via API
+async function del(id) {
+  if (!confirm('Hapus command ini?')) return;
+  try {
+    await fetch(`/api/commands/${id}`, { method: 'DELETE' });
+    showToast('Command dihapus');
+    loadData(); // Reload data dari SQLite
+  } catch(err) { showToast('Gagal menghapus data'); }
+}
+
+// Fitur Export (optional: jika masih butuh backup manual ke JSON)
+function exportData() {
+  const blob = new Blob([JSON.stringify({ data }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'cheatsheet-backup.json'; a.click();
+}
+
+
+async function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const r = new FileReader();
+  r.onload = async (ev) => {
+    try {
+      let parsed = JSON.parse(ev.target.result);
+      // Mendukung format export lama maupun baru
+      let imported = Array.isArray(parsed) ? parsed : (parsed.data || []);
+      if (!Array.isArray(imported)) throw new Error('Bukan format array');
+
+      let added = 0;
+      showToast('Mengimpor data, mohon tunggu...');
+
+      // Looping data dan kirim ke backend satu per satu (POST)
+      for (const c of imported) {
+        if (c.name && c.cmd) {
+          await fetch('/api/commands', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: c.name,
+              cmd: c.cmd,
+              desc: c.desc || '',
+              cat: c.cat || 'General'
+            })
+          });
+          added++;
+        }
+      }
+
+      // Setelah semua selesai dikirim, muat ulang tabel dari SQLite
+      loadData(); 
+      showToast(`${added} command berhasil diimport`);
+      
+    } catch(err) {
+      showToast('Gagal import: format tidak valid atau koneksi error');
+      console.error(err);
+    }
+    
+    // Reset input file agar bisa digunakan lagi
+    e.target.value = '';
+  };
+  r.readAsText(file);
+}
+
+
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Inisialisasi awal
+loadData();
+</script>
+</body>
+</html>
