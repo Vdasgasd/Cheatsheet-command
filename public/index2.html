@@ -82,6 +82,7 @@ console.log('sample cat:', data[0]?.cat);
 // Fetch data dari Backend API SQLite
 async function loadData() {
   try {
+    renderCategorySelect(); renderCategorySelect();
     await loadCategories();
     const res = await fetch('/api/commands');
     data = await res.json();
@@ -101,7 +102,7 @@ function filtered() {
 
   return data.filter(c => {
     const matchCat =
-      activeCat === 'Semua' || !activeCat || c.cat === activeCat;
+      activeCat === 'semua' || !activeCat || c.cat === activeCat;
 
     const matchQ =
       !q ||
@@ -119,8 +120,7 @@ function renderCats() {
   const counts = {};
   CATS.forEach(c => counts[c] = 0);
   data.forEach(c => { counts[c.cat] = (counts[c.cat]||0) + 1; counts['Semua']++; });
-
-  renderCategorySelect();
+  
 }
 
 async function loadCategories() {
