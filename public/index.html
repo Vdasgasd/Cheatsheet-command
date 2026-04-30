@@ -240,12 +240,6 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-  .tag-Linux    { background: var(--accent-bg); color: var(--accent); }
-  .tag-Docker   { background: var(--green-bg); color: var(--green); }
-  .tag-Networking { background: var(--purple-bg); color: var(--purple); }
-  .tag-Git      { background: var(--amber-bg); color: var(--amber); }
-  .tag-Systemd  { background: var(--pink-bg); color: var(--pink); }
-  .tag-General  { background: var(--gray-bg); color: var(--text2); }
 
   .card-cmd {
     font-family: var(--mono);
@@ -480,9 +474,7 @@ function renderCats() {
   const counts = {};
   CATS.forEach(c => counts[c] = 0);
   data.forEach(c => { counts[c.cat] = (counts[c.cat]||0) + 1; counts['Semua']++; });
-  document.getElementById('cats').innerHTML = CATS.map(c =>
-    `<button class="cat-pill${c===activeCat?' active':''}" onclick="setCat('${c}')">${c} <span style="opacity:.5;font-weight:400">${counts[c]||0}</span></button>`
-  ).join('');
+  
 }
 
 async function loadCategories() {
@@ -521,7 +513,14 @@ function render() {
     ? `<div class="empty"><div class="empty-icon">⌕</div><p>Tidak ada command</p></div>`
     : list.map(c => `
 <div class="card" id="card-${c.id}">
-  <div class="card-header"><span class="card-name">${esc(c.name)}</span><span class="tag tag-${esc(c.cat)}">${esc(c.cat)}</span></div>
+  <div class="card-header"><span class="card-name">${esc(c.name)}</span>${(() => {
+  const color = stringToColor(c.cat);
+  return `<span class="tag" style="
+    background:${color.bg};
+    color:${color.text};
+    border:1px solid ${color.border};
+  ">${esc(c.cat)}</span>`;
+})()}</div>
   <div class="card-cmd" onclick="copyCmd(${c.id})">${esc(c.cmd)}</div>
   <div class="card-desc">${esc(c.desc)}</div>
   <div id="fb-${c.id}" class="copy-feedback">klik untuk copy</div>
@@ -548,6 +547,23 @@ function renderFormCategory() {
     .map(c => `<option value="${c}">${c}</option>`)
     .join('');
 }
+
+function stringToColor(str) {
+  let hash = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const hue = hash % 360;
+
+  return {
+    bg: `hsla(${hue}, 70%, 60%, 0.12)`,
+    text: `hsl(${hue}, 70%, 65%)`,
+    border: `hsla(${hue}, 70%, 60%, 0.3)`
+  };
+}
+
 
 function openAdd() {
   editId = null;
