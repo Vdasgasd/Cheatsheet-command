@@ -9,5 +9,5 @@ COPY . .
 
 EXPOSE 3080
 
-CMD ["node", "server.js"]P
+CMD ["node", "server.js"]
 
