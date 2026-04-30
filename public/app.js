@@ -1,77 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CMD Cheatsheet — sandiaz.my.id</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="style.css">
-  </head>
-<body>
 
-<header>
-  <div class="header-inner">
-    <div class="logo">~/cmd<span>.cheatsheet</span></div>
-    <div style="flex:1"></div>
-    <button class="btn btn-primary" onclick="openAdd()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-      Tambah
-    </button>
-    <button class="btn btn-ghost" onclick="exportData()">Export</button>
-    <label class="btn btn-ghost" style="cursor:pointer">
-      Import
-      <input type="file" accept=".json" style="display:none" onchange="importData(event)">
-    </label>
-  </div>
-</header>
-
-<main>
-  <div class="search-row">
-    <div class="search-wrap">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="search" id="search" placeholder="Cari command, nama, atau deskripsi…" autocomplete="off">
-    </div>
-    <select id="cat-select" onchange="setCatFromSelect()">
-    </select>
-  </div>
-
-  <div class="cats-row" id="cats"></div>
-  <div class="count-label" id="count"></div>
-  <div class="grid" id="grid"></div>
-</main>
-
-<!-- modal -->
-<div class="modal-overlay" id="modal" style="display:none" onclick="onOverlayClick(event)">
-  <div class="modal">
-    <h3 id="modal-title">Tambah command baru</h3>
-    <div class="form-group">
-      <label>Nama / judul</label>
-      <input type="text" id="f-name" placeholder="cth: List semua service yang running">
-    </div>
-    <div class="form-group">
-      <label>Command</label>
-      <textarea id="f-cmd" placeholder="cth: systemctl list-units --type=service --state=running"></textarea>
-    </div>
-    <div class="form-group">
-      <label>Deskripsi</label>
-      <input type="text" id="f-desc" placeholder="cth: Tampilkan semua systemd service yang aktif">
-    </div>
-    <div class="form-group">
-      <label>Kategori</label>
-      <select id="f-cat">
-      </select>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal()">Batal</button>
-      <button class="btn btn-primary" onclick="saveCard()">Simpan</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
 let CATS = ['Semua'];
 let activeCat = 'Semua';
 let editId = null;
@@ -82,7 +9,6 @@ console.log('sample cat:', data[0]?.cat);
 // Fetch data dari Backend API SQLite
 async function loadData() {
   try {
-    renderCategorySelect(); renderCategorySelect();
     await loadCategories();
     const res = await fetch('/api/commands');
     data = await res.json();
@@ -102,7 +28,7 @@ function filtered() {
 
   return data.filter(c => {
     const matchCat =
-      activeCat === 'semua' || !activeCat || c.cat === activeCat;
+      activeCat === 'Semua' || !activeCat || c.cat === activeCat;
 
     const matchQ =
       !q ||
@@ -120,7 +46,8 @@ function renderCats() {
   const counts = {};
   CATS.forEach(c => counts[c] = 0);
   data.forEach(c => { counts[c.cat] = (counts[c.cat]||0) + 1; counts['Semua']++; });
-  
+
+  renderCategorySelect();
 }
 
 async function loadCategories() {
@@ -339,6 +266,3 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 
 // Inisialisasi awal
 loadData();
-</script>
-</body>
-</html>
